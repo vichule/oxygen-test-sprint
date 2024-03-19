@@ -46,7 +46,9 @@ class Room {
 
 
     static totalOccupancyPercentage(rooms, startDate, endDate) {
-
+        let totalPercentage = 0
+        rooms.forEach(room => {totalPercentage += room.occupancyPercentage(startDate,endDate)})
+        return Math.round(totalPercentage)
     }
 
     static availableRooms(rooms, startDate, endDate){
