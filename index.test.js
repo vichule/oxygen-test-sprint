@@ -1,18 +1,18 @@
     const {Room, Booking} = require('./index.js')
 
-    const roomTemplate = {name: 'Single', bookings: [], rate:100, discount: 10};
+    const roomTemplate = {name: 'Single', bookings: [], rate:100};
     const bookingTemplate = {name: 'Javi C.D', email: 'fakeemail@gmail.com'};
 
-    const room = new Room({...roomTemplate})
-    const roomA = new Room({...roomTemplate})
-    const roomB = new Room({...roomTemplate})
+    const room = new Room({...roomTemplate, discount: 10}) 
+    const roomA = new Room({...roomTemplate, discount: 5}) 
+    const roomB = new Room({...roomTemplate, discount: 25}) 
 
-    const bookingA = new Booking({...bookingTemplate, checkIn: '2024-10-10', checkOut:'2024-10-15', room})
-    const bookingB = new Booking({...bookingTemplate, checkIn: '2024-10-15', checkOut:'2024-10-20', room})
-    const bookingC = new Booking({...bookingTemplate, checkIn: '2024-10-20', checkOut:'2024-10-30', roomA})
-    const bookingD = new Booking({...bookingTemplate, checkIn: '2024-06-12', checkOut:'2024-06-16', roomA})
-    const bookingE = new Booking({...bookingTemplate, checkIn: '2024-08-01', checkOut:'2024-08-10', roomB})
-    const bookingF = new Booking({...bookingTemplate, checkIn: '2024-08-10', checkOut:'2024-08-20', roomB})
+    const bookingA = new Booking({...bookingTemplate, checkIn: '2024-10-10', checkOut:'2024-10-15',discount: 20,room: room}) 
+    const bookingB = new Booking({...bookingTemplate, checkIn: '2024-10-15', checkOut:'2024-10-20',discount: 10,room: room}) 
+    const bookingC = new Booking({...bookingTemplate, checkIn: '2024-10-20', checkOut:'2024-10-30',discount: 5,room: roomA})
+    const bookingD = new Booking({...bookingTemplate, checkIn: '2024-06-12', checkOut:'2024-06-16',discount: 10,room: roomA}) 
+    const bookingE = new Booking({...bookingTemplate, checkIn: '2024-08-01', checkOut:'2024-08-10',discount: 8,room: roomB}) 
+    const bookingF = new Booking({...bookingTemplate, checkIn: '2024-08-10', checkOut:'2024-08-20',discount: -1,room: roomB})
 
     room.bookings = [bookingA, bookingB]
     roomA.bookings = [bookingC, bookingD]
@@ -97,17 +97,30 @@
         test('Return available rooms between date1 & date2', () => {
             expect(Room.availableRooms(roomsList, '2024-06-12', '2024-08-20')).toMatchObject([room]);
         });
+
+        test('Return available rooms between date1 & date2', () => {
+            expect(Room.availableRooms(roomsList, '2024-01-12', '2024-12-16')).toMatchObject([]);
+        });
     })
 
 
     describe('Fee Methods', ()=>{
 
-        test('Return a total fee of for the booking: ', () => {
-            expect(bookingA.getFee().toBe(100));
+        test('Returns the fee, including discounts on room and booking', () => {
+            expect(bookingA.getFee()).toBe(7200);
+            
         });
 
-        test('Return a total fee of for the booking: ', () => {
-            expect(bookingC.getFee().toBe(50));
+        test('Returns the fee, including discounts on room and booking', () => {
+            expect(bookingD.getFee()).toBe(8550);
+        });
+
+        test('Returns the fee, including discounts on room and booking', () => {
+            expect(bookingE.getFee()).toBe(6900);
+        });
+
+        test('Returns the fee, including discounts on room and booking', () => {
+            expect(bookingF.getFee()).toBe(7500);
         });
     })
 

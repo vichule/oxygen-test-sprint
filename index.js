@@ -7,6 +7,17 @@ class Room {
         this.discount = discount
     }
 
+    rateCentDiscount() {
+        if(this.discount < 0 || this.discount >= 100){
+            return this.rate
+        }else{
+            return (this.rate - ((this.rate * this.discount) / 100)) * 100;
+        }
+        
+    }
+    
+    
+
     isOccupied(date){
         // if(typeof(date) !== 'string') throw new Error('Invalid Values');
         if(isNaN(Date.parse(date))) throw new Error('Invalid Values');
@@ -74,7 +85,12 @@ class Booking {
     }
 
     getFee(){
-
+        if(this.discount < 0 || this.discount >= 100){
+            return this.room.rateCentDiscount()
+        }else{
+            return Math.round(this.room.rateCentDiscount() - (this.room.rateCentDiscount() * this.discount / 100));
+        }
+        
     }
 }
 
