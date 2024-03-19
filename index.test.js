@@ -6,18 +6,19 @@
     const room = new Room({...roomTemplate})
     const roomA = new Room({...roomTemplate})
     const roomB = new Room({...roomTemplate})
-    const roomsList = [room,roomA,roomB]
 
     const bookingA = new Booking({...bookingTemplate, checkIn: '2024-10-10', checkOut:'2024-10-15', room})
     const bookingB = new Booking({...bookingTemplate, checkIn: '2024-10-15', checkOut:'2024-10-20', room})
     const bookingC = new Booking({...bookingTemplate, checkIn: '2024-10-20', checkOut:'2024-10-30', roomA})
     const bookingD = new Booking({...bookingTemplate, checkIn: '2024-06-12', checkOut:'2024-06-16', roomA})
     const bookingE = new Booking({...bookingTemplate, checkIn: '2024-08-01', checkOut:'2024-08-10', roomB})
-    const bookingF = new Booking({...bookingTemplate, checkIn: '2024-08-10', checkOut:'2024-10-20', roomB})
+    const bookingF = new Booking({...bookingTemplate, checkIn: '2024-08-10', checkOut:'2024-08-20', roomB})
 
     room.bookings = [bookingA, bookingB]
     roomA.bookings = [bookingC, bookingD]
     roomB.bookings = [bookingE, bookingF]
+
+    const roomsList = [room,roomA,roomB]
     
     describe('Rooms Occupancy', ()=>{
 
@@ -63,7 +64,7 @@
     
     
         test('Return correct total occupancy percentage for all rooms', () => {
-            expect(Room.totalOccupancyPercentage(roomsList,'2024-08-01','2024-08-20')).toBe(100);
+            expect(Room.totalOccupancyPercentage(roomsList,'2024-10-10','2024-10-30')).toBe(100);
         });
 
         test('Return correct total occupancy percentage for all rooms', () => {
@@ -71,19 +72,36 @@
         });
 
         test('Return correct total occupancy percentage for all rooms', () => {
-            expect(Room.totalOccupancyPercentage(roomsList,'2024-06-10','2024-10-18')).toBe(70);
+            expect(Room.totalOccupancyPercentage(roomsList,'2024-06-10','2024-10-18')).toBe(25);
+        });
+
+        test('Return correct total occupancy percentage for all rooms', () => {
+            expect(() => Room.totalOccupancyPercentage(roomsList,'2025-06-10','2024-10-18')).toThrow('Invalid Values. Start Date cant be greater than End Date');
+        });
+
+        test('Return correct total occupancy percentage for all rooms', () => {
+            expect(() => Room.totalOccupancyPercentage(roomsList,'WRONG','WRONG')).toThrow('Invalid Values');
         });
     })
 
     describe('Rooms Availability', ()=>{
-        
+
         test('Return available rooms between date1 & date2', () => {
-            expect(Room.availableRooms()).toBe(3);
+            expect(Room.availableRooms(roomsList, '2024-05-01', '2024-05-09')).toMatchObject(roomsList);
+        });
+
+        test('Return available rooms between date1 & date2', () => {
+            expect(Room.availableRooms(roomsList, '2024-10-10', '2024-10-15')).toMatchObject([roomA, roomB]);
+        });
+
+        test('Return available rooms between date1 & date2', () => {
+            expect(Room.availableRooms(roomsList, '2024-06-12', '2024-08-20')).toMatchObject([room]);
         });
     })
 
 
     describe('Fee Methods', ()=>{
+
         test('Return a total fee of for the booking: ', () => {
             expect(bookingA.getFee().toBe(100));
         });

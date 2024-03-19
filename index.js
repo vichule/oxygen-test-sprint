@@ -52,7 +52,14 @@ class Room {
     }
 
     static availableRooms(rooms, startDate, endDate){
-
+        const roomsAvailable = rooms.filter(room => {
+            if(room.occupancyPercentage(startDate, endDate) > 0){
+                return false
+            }else{
+                return true
+            }
+        })
+        return roomsAvailable
     }
 }
 
