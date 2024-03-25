@@ -22,66 +22,75 @@
     
     describe('Rooms Occupancy', ()=>{
 
-        test('Rooms is occupied inside range', () => {
-            expect(room.isOccupied('2024-10-12')).toBeTruthy();
-        });
-    
-        test('Rooms is occupied inside range', () => {
-            expect(room.isOccupied('2024-10-19')).toBeTruthy();
-        });
-    
-        test('Rooms is occupied outside range', () => {
-            expect(room.isOccupied('2024-12-02')).toBeFalsy();
-        });
-    
-        test('Rooms is occupied outside range', () => {
-            expect(room.isOccupied('2024-09-02')).toBeFalsy();
-        });
-    
-        test('Return correct percentage of days within range of dates given', () => {
-            expect(room.occupancyPercentage('2024-10-10','2024-10-15')).toBe(100);
-        });
-    
-        test('Return correct percentage of days within range of dates given', () => {
-            expect(roomA.occupancyPercentage('2024-10-20','2024-10-30')).toBe(100);
-        });
-    
-        test('Return correct percentage of days within range of dates given', () => {
-            expect(room.occupancyPercentage('2024-11-30','2024-12-20')).toBe(0);
-        });
-    
-        test('Return correct percentage of days within range of dates given', () => {
-            expect(room.occupancyPercentage('2024-10-08','2024-10-11')).toBe(50);
-        });
-    
-        test('Return correct percentage of days within range of dates given', () => {
-            expect(() => room.occupancyPercentage('2024-10-18','2024-10-11')).toThrow('Invalid Values. Start Date cant be greater than End Date');
-        });
-    
-        test('Return correct percentage of days within range of dates given', () => {
-            expect(() => room.occupancyPercentage('WRONG','2024-10-11')).toThrow('Invalid Values');
-        });
-    
-    
-        test('Return correct total occupancy percentage for all rooms', () => {
-            expect(Room.totalOccupancyPercentage(roomsList,'2024-10-10','2024-10-30')).toBe(100);
-        });
+        describe('isOccupied method', ()=>{
+            test('Rooms is occupied inside range', () => {
+                expect(room.isOccupied('2024-10-12')).toBe(true);
+            });
+        
+            test('Rooms is occupied inside range', () => {
+                expect(room.isOccupied('2024-10-19')).toBe(true);
+            });
+        
+            test('Rooms is occupied outside range', () => {
+                expect(room.isOccupied('2024-12-02')).toBe(false);
+            });
+        
+            test('Rooms is occupied outside range', () => {
+                expect(room.isOccupied('2024-09-02')).toBe(false);
+            });
+        })
 
-        test('Return correct total occupancy percentage for all rooms', () => {
-            expect(Room.totalOccupancyPercentage(roomsList,'2024-06-12','2024-06-19')).toBe(50);
-        });
+        
 
-        test('Return correct total occupancy percentage for all rooms', () => {
-            expect(Room.totalOccupancyPercentage(roomsList,'2024-06-10','2024-10-18')).toBe(25);
-        });
-
-        test('Return correct total occupancy percentage for all rooms', () => {
-            expect(() => Room.totalOccupancyPercentage(roomsList,'2025-06-10','2024-10-18')).toThrow('Invalid Values. Start Date cant be greater than End Date');
-        });
-
-        test('Return correct total occupancy percentage for all rooms', () => {
-            expect(() => Room.totalOccupancyPercentage(roomsList,'WRONG','WRONG')).toThrow('Invalid Values');
-        });
+        describe('occupancyPercentage method', ()=>{
+            test('Return correct percentage of days within range of dates given', () => {
+                expect(room.occupancyPercentage('2024-10-10','2024-10-15')).toBe(100);
+            });
+        
+            test('Return correct percentage of days within range of dates given', () => {
+                expect(roomA.occupancyPercentage('2024-10-20','2024-10-30')).toBe(100);
+            });
+        
+            test('Return correct percentage of days within range of dates given', () => {
+                expect(room.occupancyPercentage('2024-11-30','2024-12-20')).toBe(0);
+            });
+        
+            test('Return correct percentage of days within range of dates given', () => {
+                expect(room.occupancyPercentage('2024-10-08','2024-10-11')).toBe(50);
+            });
+        
+            test('Return correct percentage of days within range of dates given', () => {
+                expect(() => room.occupancyPercentage('2024-10-18','2024-10-11')).toThrow('Invalid Values. Start Date cant be greater than End Date');
+            });
+        
+            test('Return correct percentage of days within range of dates given', () => {
+                expect(() => room.occupancyPercentage('WRONG','2024-10-11')).toThrow('Invalid Values');
+            });
+        })
+        
+        describe('totalOccupancyPercentage method', ()=>{
+            test('Return correct total occupancy percentage for all rooms', () => {
+                expect(Room.totalOccupancyPercentage(roomsList,'2024-10-10','2024-10-30')).toBe(100);
+            });
+    
+            test('Return correct total occupancy percentage for all rooms', () => {
+                expect(Room.totalOccupancyPercentage(roomsList,'2024-06-12','2024-06-19')).toBe(50);
+            });
+    
+            test('Return correct total occupancy percentage for all rooms', () => {
+                expect(Room.totalOccupancyPercentage(roomsList,'2024-06-10','2024-10-18')).toBe(25);
+            });
+    
+            test('Return correct total occupancy percentage for all rooms', () => {
+                expect(() => Room.totalOccupancyPercentage(roomsList,'2025-06-10','2024-10-18')).toThrow('Invalid Values. Start Date cant be greater than End Date');
+            });
+    
+            test('Return correct total occupancy percentage for all rooms', () => {
+                expect(() => Room.totalOccupancyPercentage(roomsList,'WRONG','WRONG')).toThrow('Invalid Values');
+            });
+        })
+    
+        
     })
 
     describe('Rooms Availability', ()=>{
