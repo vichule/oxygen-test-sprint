@@ -1,3 +1,5 @@
+const { calculateDiscount } = require("./helpers")
+
 class Room {
 
     constructor({name, bookings, rate, discount}){
@@ -8,18 +10,13 @@ class Room {
     }
 
     rateCentDiscount() {
-        if(this.discount < 0 || this.discount >= 100){
-            return this.rate
-        }else{
-            return (this.rate - ((this.rate * this.discount) / 100)) * 100;
-        }
+        calculateDiscount(this.rate, this.discount)
         
     }
     
     
 
     isOccupied(date){
-        // if(typeof(date) !== 'string') throw new Error('Invalid Values');
         if(isNaN(Date.parse(date))) throw new Error('Invalid Values');
         const dateTransformed = new Date(date).getTime();
 
@@ -63,14 +60,9 @@ class Room {
     }
 
     static availableRooms(rooms, startDate, endDate){
-        const roomsAvailable = rooms.filter(room => {
-            if(room.occupancyPercentage(startDate, endDate) > 0){
-                return false
-            }else{
-                return true
-            }
-        })
+        const roomsAvailable = rooms.filter(room => (room.occupancyPercentage(startDate, endDate) === 0))
         return roomsAvailable
+
     }
 }
 
@@ -85,11 +77,10 @@ class Booking {
     }
 
     getFee(){
-        if(this.discount < 0 || this.discount >= 100){
-            return this.room.rateCentDiscount()
-        }else{
-            return Math.round(this.room.rateCentDiscount() - (this.room.rateCentDiscount() * this.discount / 100));
-        }
+        const room = this.room
+        const roomRate = calculateDiscount(room.rate, room.discount)
+        const fixedDiscount = this.discount ? Math.max(0, this.discount) : 0
+        return Math.round(roomRate - (roomRate * fixedDiscount / 100));
         
     }
 }
