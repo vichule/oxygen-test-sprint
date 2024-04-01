@@ -20,8 +20,8 @@ export class Room implements RoomInterface{
         this.discount = discount
     }
 
-    rateCentDiscount() {
-        calculateDiscount(this.rate, this.discount)
+    rateCentDiscount():number {
+        return calculateDiscount(this.rate, this.discount)
         
     }
     
@@ -103,7 +103,7 @@ export class Booking implements BookingInterface{
         this.room = room
     }
 
-    getFee(){
+    getFee():number{
         const room = this.room
         const roomRate = calculateDiscount(room.rate, room.discount)
         const fixedDiscount = this.discount ? Math.max(0, this.discount) : 0
