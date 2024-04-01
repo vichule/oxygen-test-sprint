@@ -1,4 +1,4 @@
-const {Room, Booking} = require('./index.js')
+import  {Room, Booking} from './index.js'
 
     const roomTemplate = {name: 'Single', bookings: [], rate:100};
     const bookingTemplate = {name: 'Javi C.D', email: 'fakeemail@gmail.com'};
